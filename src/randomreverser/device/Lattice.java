@@ -17,7 +17,7 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.stream.LongStream;
 
 import static randomreverser.math.lattice.LLL.Params.recommendedDelta;
 
@@ -104,7 +104,7 @@ public class Lattice<R extends Rand> {
 		this.dirty = false;
 	}
 
-	public Stream<Long> streamSolutions() {
+	public LongStream streamSolutions() {
 		this.build();
 
 		BigVector lower = new BigVector(this.dimensions);
@@ -127,11 +127,10 @@ public class Lattice<R extends Rand> {
 		LCG back = LCG.JAVA.combine(-this.callIndices.get(0));
 
 		return Enumerate.enumerate(this.reducedMatrix.transpose(), lower, upper, offset)
-				.map(vec -> vec.get(0))
-				.map(BigFraction::getNumerator)
-				.map(BigInteger::longValue)
-				.map(back::nextSeed)
-				;
+			.map(vec -> vec.get(0))
+			.map(BigFraction::getNumerator)
+			.mapToLong(BigInteger::longValue)
+			.map(back::nextSeed);
 	}
 
 	public Lattice<R> copy() {

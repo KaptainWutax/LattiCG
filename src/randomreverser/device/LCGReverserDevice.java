@@ -1,14 +1,12 @@
 package randomreverser.device;
 
-import kaptainwutax.seedutils.lcg.LCG;
-import kaptainwutax.seedutils.lcg.rand.CombinedJRand;
-import kaptainwutax.seedutils.lcg.rand.JRand;
 import kaptainwutax.seedutils.lcg.rand.Rand;
 import randomreverser.call.LatticeCall;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 public abstract class LCGReverserDevice<R extends Rand> {
@@ -35,14 +33,13 @@ public abstract class LCGReverserDevice<R extends Rand> {
 		this.lattice.processCall(call);
 	}
 
-	public List<Long> findAllSeeds(Process process) {
-		return this.streamSeeds(process).collect(Collectors.toCollection(ArrayList::new));
+	public long[] findAllSeeds(Process process) {
+		return this.streamSeeds(process).toArray();
 	}
 
-	public abstract Stream<Long> streamSeeds(Process process);
+	public abstract LongStream streamSeeds(Process process);
 
 	public enum Process {
 		LATTICE_ONLY, BRUTEFORCE_ONLY, EVERYTHING
 	}
-
 }
