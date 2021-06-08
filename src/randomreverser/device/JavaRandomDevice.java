@@ -1,7 +1,7 @@
 package randomreverser.device;
 
 import kaptainwutax.seedutils.lcg.LCG;
-import kaptainwutax.seedutils.rand.JRand;
+import kaptainwutax.seedutils.lcg.rand.JRand;
 import randomreverser.call.LatticeCall;
 import randomreverser.call.SeedCall;
 import randomreverser.call.java.*;
@@ -17,7 +17,7 @@ public class JavaRandomDevice extends LCGReverserDevice<JRand> {
 	}
 
 	@Override
-	public Stream<Long> streamSeeds(Process process) {
+	public LongStream streamSeeds(Process process) {
 		if(process != Process.BRUTEFORCE_ONLY) {
 			return this.lattice.streamSolutions().filter(seed -> {
 				if(process == Process.LATTICE_ONLY)return true;
@@ -44,7 +44,7 @@ public class JavaRandomDevice extends LCGReverserDevice<JRand> {
 			}
 
 			return true;
-		}).boxed();
+		});
 	}
 
 	public JavaRandomDevice next(long min, long max) {
