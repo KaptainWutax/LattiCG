@@ -1,8 +1,8 @@
 package randomreverser.call.java;
 
 import kaptainwutax.seedutils.lcg.LCG;
-import kaptainwutax.seedutils.lcg.rand.JRand;
-import kaptainwutax.seedutils.lcg.rand.Rand;
+import kaptainwutax.seedutils.rand.JRand;
+import kaptainwutax.seedutils.rand.Rand;
 import randomreverser.call.SeedCall;
 
 public class Next extends SeedCall.Measured<JRand> {

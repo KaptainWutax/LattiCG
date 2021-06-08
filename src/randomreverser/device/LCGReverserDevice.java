@@ -1,9 +1,6 @@
 package randomreverser.device;
 
-import kaptainwutax.seedutils.lcg.LCG;
-import kaptainwutax.seedutils.lcg.rand.CombinedJRand;
-import kaptainwutax.seedutils.lcg.rand.JRand;
-import kaptainwutax.seedutils.lcg.rand.Rand;
+import kaptainwutax.seedutils.rand.Rand;
 import randomreverser.call.LatticeCall;
 
 import java.util.ArrayList;

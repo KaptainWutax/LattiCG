@@ -1,7 +1,7 @@
 package randomreverser.device;
 
 import kaptainwutax.seedutils.lcg.LCG;
-import kaptainwutax.seedutils.lcg.rand.Rand;
+import kaptainwutax.seedutils.rand.Rand;
 import randomreverser.call.LatticeCall;
 import randomreverser.math.component.BigFraction;
 import randomreverser.math.component.BigMatrix;

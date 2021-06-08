@@ -1,7 +1,6 @@
 package randomreverser;
 
 import kaptainwutax.seedutils.lcg.LCG;
-import kaptainwutax.seedutils.lcg.rand.CombinedJRand;
 import org.junit.Test;
 import randomreverser.call.java.*;
 import randomreverser.device.JavaRandomDevice;

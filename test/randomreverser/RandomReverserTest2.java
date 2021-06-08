@@ -1,48 +1,73 @@
 package randomreverser;
 
-import randomreverser.call.java.Next;
+import kaptainwutax.seedutils.rand.JRand;
+import randomreverser.call.LatticeCall;
+import randomreverser.call.java.NextInt;
 import randomreverser.device.JavaRandomDevice;
 import randomreverser.device.LCGReverserDevice;
-
-import java.util.Random;
-import java.util.concurrent.atomic.AtomicInteger;
+import randomreverser.device.Lattice;
 
 public class RandomReverserTest2 {
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws Exception {
+        /*
+        BufferedWriter writer = new BufferedWriter(new FileWriter(new File("all_11_eyes.txt")));
+
+        for(int a = 0; a < 11; a++) {
+            JavaRandomDevice device = new JavaRandomDevice();
+
+            for(int i = 0; i < 12; i++) {
+                if(a != i) {
+                    device.addCall(NextFloat.inRange(0.9F, 1.0F));
+                } else {
+                    device.addCall(NextFloat.consume(1));
+                }
+            }
+
+            device.streamSeeds(LCGReverserDevice.Process.EVERYTHING).forEach(aLong -> {
+                try {
+                    writer.write(aLong + "\n");
+                    writer.flush();
+                } catch(IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        }*/
+
         JavaRandomDevice device = new JavaRandomDevice();
-        Random r = new Random();
+        device.addCall(SquareDecoratorCall.at(8, 3));
+        device.addCall(NextInt.withValue(256, 42));
 
-        long seed = r.nextLong()  & ((1L << 48) - 1);
-        System.out.println("Seed: " +seed);
+        device.streamSeeds(LCGReverserDevice.Process.EVERYTHING).forEach(seed -> {
+            System.out.println(seed);
+        });
+    }
 
-        r.setSeed(seed ^ 0x5deece66dL);
-        long structureSeed = r.nextLong() & ((1L << 48) - 1);
+    public static class SquareDecoratorCall extends LatticeCall<JRand> {
+        private final int offsetX;
+        private final int offsetZ;
 
-        //Dark arts to make the first entry a valid seed. The consume nextFloat calls are entirely to go back in time. Not sponsored usage.
-        device.skip(1);
-        device.addCall(Next.inModRange((structureSeed & 0xffff_ffffL) << 16, (((structureSeed+1) & 0xffff_ffffL) << 16) - 1, (1L << 48)));
-        device.skip(-2);
-
-        if((structureSeed & 0x8000_0000L) == 0) { //Was the lower half negative
-            device.addCall(Next.inModRange((structureSeed >> 32) << 16, ((1 + (structureSeed >> 32)) << 16) - 1, (1L << 32)));
-        } else {
-            device.addCall(Next.inModRange((1 + (structureSeed >> 32)) << 16, ((2 + (structureSeed >> 32)) << 16) - 1, (1L << 32)));
+        protected SquareDecoratorCall(int posX, int posZ) {
+            this.offsetX = posX & 15;
+            this.offsetZ = posZ & 15;
         }
 
-       // device.setVerbose(true);
-        long start = System.nanoTime();
+        public static SquareDecoratorCall at(int posX, int posZ) {
+            return new SquareDecoratorCall(posX, posZ);
+        }
 
-        AtomicInteger count = new AtomicInteger(0);
-        device.streamSeeds(LCGReverserDevice.Process.EVERYTHING).forEach(s -> {
-            count.incrementAndGet();
-            System.out.println(s);
-        });
-        if (count.get() == 1)
-            System.out.println("Found " + count + " seed.");
-        else System.out.println("Found " + count + " seeds.");
+        @Override
+        public void build(Lattice<JRand> lattice) {
+            lattice.processCall(NextInt.withValue(16, this.offsetX))
+                    .processCall(NextInt.withValue(16, this.offsetZ));
+        }
 
-        long end = System.nanoTime();
-
-        System.out.printf("elapsed: %.2fs%n", (end - start) * 1e-9);
+        @Override
+        public boolean test(JRand rand) {
+            if(rand.nextInt(16) != this.offsetX)return false;
+            if(rand.nextInt(16) != this.offsetZ)return false;
+            return true;
+        }
     }
+
 }

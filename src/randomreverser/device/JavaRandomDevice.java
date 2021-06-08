@@ -1,16 +1,12 @@
 package randomreverser.device;
 
 import kaptainwutax.seedutils.lcg.LCG;
-import kaptainwutax.seedutils.lcg.rand.CombinedJRand;
-import kaptainwutax.seedutils.lcg.rand.JRand;
+import kaptainwutax.seedutils.rand.JRand;
 import randomreverser.call.LatticeCall;
 import randomreverser.call.SeedCall;
 import randomreverser.call.java.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 

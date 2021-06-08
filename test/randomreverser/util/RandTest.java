@@ -1,12 +1,11 @@
 package randomreverser.util;
 
-import kaptainwutax.seedutils.lcg.rand.JRand;
-import kaptainwutax.seedutils.lcg.rand.Rand;
+import kaptainwutax.seedutils.rand.JRand;
 import org.junit.Test;
 
 import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class RandTest {
 
