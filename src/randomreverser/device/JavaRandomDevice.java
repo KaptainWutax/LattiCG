@@ -1,14 +1,13 @@
 package randomreverser.device;
 
 import kaptainwutax.seedutils.lcg.LCG;
-import kaptainwutax.seedutils.lcg.rand.JRand;
+import kaptainwutax.seedutils.rand.JRand;
 import randomreverser.call.LatticeCall;
 import randomreverser.call.SeedCall;
 import randomreverser.call.java.*;
 
 import java.util.function.Predicate;
 import java.util.stream.LongStream;
-import java.util.stream.Stream;
 
 public class JavaRandomDevice extends LCGReverserDevice<JRand> {
 

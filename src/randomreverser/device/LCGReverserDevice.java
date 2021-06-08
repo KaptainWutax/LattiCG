@@ -1,13 +1,9 @@
 package randomreverser.device;
 
-import kaptainwutax.seedutils.lcg.rand.Rand;
+import kaptainwutax.seedutils.rand.Rand;
 import randomreverser.call.LatticeCall;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.LongStream;
-import java.util.stream.Stream;
 
 public abstract class LCGReverserDevice<R extends Rand> {
 
